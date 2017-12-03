@@ -142,6 +142,12 @@
 - (__kindof RACStream *)reduceEach:(id (^)())reduceBlock {
 	NSCParameterAssert(reduceBlock != nil);
 
+    /**
+     原信号发送一个RACTuple类型的t(使用断言惊醒限定，必须是这个类型的！)。
+     t作为reduceBlock的参数计算出一只结果，并返回。
+     实现的效果就是： t ---map---> reduceBlock(t)
+     当然reduceBlock(t)不能直接计算， 而是通过RACBlockTrampoline实现该效果。
+     */
 	__weak RACStream *stream __attribute__((unused)) = self;
 	return [[self map:^(RACTuple *t) {
 		NSCAssert([t isKindOfClass:RACTuple.class], @"Value from stream %@ is not a tuple: %@", stream, t);
