@@ -101,9 +101,7 @@
 		0E9656541FC7D1010052583E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0E9655F81FC7D1010052583E /* README.md */; };
 		0EE5ED8F1FC6BD39005805F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5ED8E1FC6BD39005805F5 /* AppDelegate.m */; };
 		0EE5ED921FC6BD39005805F5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5ED911FC6BD39005805F5 /* ViewController.m */; };
-		0EE5ED951FC6BD39005805F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EE5ED931FC6BD39005805F5 /* Main.storyboard */; };
 		0EE5ED971FC6BD39005805F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EE5ED961FC6BD39005805F5 /* Assets.xcassets */; };
-		0EE5ED9A1FC6BD39005805F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EE5ED981FC6BD39005805F5 /* LaunchScreen.storyboard */; };
 		0EE5ED9D1FC6BD39005805F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5ED9C1FC6BD39005805F5 /* main.m */; };
 		0EE5EDA71FC6BD39005805F5 /* RACDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5EDA61FC6BD39005805F5 /* RACDemoUITests.m */; };
 /* End PBXBuildFile section */
@@ -315,9 +313,7 @@
 		0EE5ED8E1FC6BD39005805F5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0EE5ED901FC6BD39005805F5 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		0EE5ED911FC6BD39005805F5 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		0EE5ED941FC6BD39005805F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0EE5ED961FC6BD39005805F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0EE5ED991FC6BD39005805F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0EE5ED9B1FC6BD39005805F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EE5ED9C1FC6BD39005805F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EE5EDA21FC6BD39005805F5 /* RACDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RACDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -582,9 +578,7 @@
 				0EE5ED8E1FC6BD39005805F5 /* AppDelegate.m */,
 				0EE5ED901FC6BD39005805F5 /* ViewController.h */,
 				0EE5ED911FC6BD39005805F5 /* ViewController.m */,
-				0EE5ED931FC6BD39005805F5 /* Main.storyboard */,
 				0EE5ED961FC6BD39005805F5 /* Assets.xcassets */,
-				0EE5ED981FC6BD39005805F5 /* LaunchScreen.storyboard */,
 				0EE5ED9B1FC6BD39005805F5 /* Info.plist */,
 				0EE5ED9C1FC6BD39005805F5 /* main.m */,
 				0E9655371FC7D1000052583E /* ReactiveObjC */,
@@ -684,10 +678,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E9655F91FC7D1010052583E /* LICENSE.md in Resources */,
-				0EE5ED9A1FC6BD39005805F5 /* LaunchScreen.storyboard in Resources */,
 				0E9656541FC7D1010052583E /* README.md in Resources */,
 				0EE5ED971FC6BD39005805F5 /* Assets.xcassets in Resources */,
-				0EE5ED951FC6BD39005805F5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,25 +811,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		0EE5ED931FC6BD39005805F5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EE5ED941FC6BD39005805F5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0EE5ED981FC6BD39005805F5 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EE5ED991FC6BD39005805F5 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		0EE5EDA91FC6BD39005805F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -950,10 +923,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T4QLUC3P6M;
 				INFOPLIST_FILE = RACDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ctrip.RACDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -964,10 +938,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T4QLUC3P6M;
 				INFOPLIST_FILE = RACDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ctrip.RACDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

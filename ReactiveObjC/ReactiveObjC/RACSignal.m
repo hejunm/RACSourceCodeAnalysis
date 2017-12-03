@@ -93,6 +93,23 @@
 - (RACSignal *)bind:(RACSignalBindBlock (^)(void))block {
 	NSCParameterAssert(block != NULL);
 
+    /**
+     bind实现实现从一个信号（信号1）映射到另一个信号（信号2）。
+     bind: should 在注释写的很清楚：
+     1，订阅原信号。
+     2，当原信号发送一个value时，要根据这个value 使用bindingBlock转换成一个另一个信号。
+     
+     bindingBlock由下面代码得到。
+     RACSignalBindBlock bindingBlock = block();
+     
+     转换过程： 订阅原信号，在订阅者的nextBlock中调用下面的方法。x就是原信号发送的value。可以根据发送的值设定stop为YES or NO
+     如果是YES, 结束bind.
+     BOOL stop = NO;
+     id signal = bindingBlock(x, &stop);
+     
+     3， 如果bindingBlock 返回一个信号， 订阅此信号。这个也就是在addSignal block所做的事情。
+     4，当原信号发送complate error, complate error都会发送给订阅者，并完成清除工作。
+     */
 	/*
 	 * -bind: should:
 	 * 

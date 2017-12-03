@@ -54,6 +54,11 @@
 - (RACDisposable *)subscribe:(id<RACSubscriber>)subscriber {
 	NSCParameterAssert(subscriber != nil);
 
+    /**
+     每个订阅者的disposable 会添加下面创建的disposable。 
+     实现的效果就是某个订阅者dispose,改订阅者会从self.subscribers 中移除。
+     */
+    
 	RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
 	subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];
 
