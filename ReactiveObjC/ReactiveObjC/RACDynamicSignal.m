@@ -35,10 +35,19 @@
 
 - (RACDisposable *)subscribe:(id<RACSubscriber>)subscriber {
 	NSCParameterAssert(subscriber != nil);
-
+    
 	RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
+    /**
+     装饰者， passthroughSubscriber会作为didSubscribe block的参数进行调用。
+     在sendNext等进行事件分发时，会先判断passthroughSubscriber.disposable否已经dispose, 如果已经dispose，直接返回。
+     形参subscriber（subscriber1）中存在一个disposable对象（disposable1），passthroughSubscriber.disposable会添加到disposable1中
+     didSubscribe block返回一个自己创建的disposable，用于释放资源，并添加到passthroughSubscriber.disposable中。
+     当subscriber1 调用sendError 或 sendComplate时，disposable1会执行dispose方法，这时会遍历其保存的所有的disposable并执行dispose，完成资源释放。
+     当subscriber1 delloc时,也会调用disposable1的dispose方法。
+     之后再执行sendNest,sendError,sendComplate就不会执行了。
+     */
+   
 	subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];
-
 	if (self.didSubscribe != NULL) {
 		RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^{
 			RACDisposable *innerDisposable = self.didSubscribe(subscriber);

@@ -152,6 +152,7 @@
 	return [[self alloc] initWithBackingArray:objects];
 }
 
+//实现与数组类似的通过下标访问元素。
 - (id)objectAtIndex:(NSUInteger)index {
 	if (index >= self.count) return nil;
 	

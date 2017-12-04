@@ -105,6 +105,11 @@
 	}] setNameWithFormat:@"[%@] -mapReplace: %@", self.name, RACDescription(object)];
 }
 
+/**
+ scanWithStart:reduce: reduceBlock的结果会影响后面reduceBlock的结果。 value1->value2->value3->value4->value5
+ combinePreviousWithStart 中的reduceBlock中只关心上一次原信号发送的值和这一次原信号发送的值。不关心结果。
+ 
+ */
 - (__kindof RACStream *)combinePreviousWithStart:(id)start reduce:(id (^)(id previous, id next))reduceBlock {
 	NSCParameterAssert(reduceBlock != NULL);
 	return [[[self
@@ -213,10 +218,19 @@
 			current = [stream map:^(id x) {
 				return RACTuplePack(x);
 			}];
-
 			continue;
 		}
-
+        /**
+         根据传进来的block进行合并。
+         例如在zip中指定的block如下：
+         ^(RACStream *left, RACStream *right) {
+            return [left zipWith:right];
+         }
+         ([stream1 map])
+         ([stream1 map]) 与 stream2   zipWith
+        （([stream1 map]) 与 stream2） 与 stream2 zipWith
+         。。。
+         */
 		current = block(current, stream);
 	}
 
@@ -280,9 +294,12 @@
 
 - (__kindof RACStream *)scanWithStart:(id)startingValue reduceWithIndex:(id (^)(id, id, NSUInteger))reduceBlock {
 	NSCParameterAssert(reduceBlock != nil);
-
+    /**
+        在调用block时，将上一个reduceBlock得到的结果传到block中。
+        index 用于统计次数。
+     */
+    
 	Class class = self.class;
-
 	return [[self bind:^{
 		__block id running = startingValue;
 		__block NSUInteger index = 0;
