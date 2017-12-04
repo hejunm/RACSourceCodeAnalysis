@@ -13,6 +13,11 @@
 // A private class that allows a limited type of dynamic block invocation.
 @interface RACBlockTrampoline : NSObject
 
+/**
+ 使用给定参数调用block，并返回结果。
+ 参数和返回值都必须是对象
+ 参数最多15个
+ */
 // Invokes the given block with the given arguments. All of the block's
 // argument types must be objects and it must be typed to return an object.
 //
