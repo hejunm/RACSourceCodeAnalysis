@@ -155,6 +155,11 @@
 	}] setNameWithFormat:@"[%@] -reduceEach:", self.name];
 }
 
+/**
+ 以value开始。
+ 
+ 对于RACSignal， [self.class return:value]返回RACReturnSignal。 调用concat时会订阅RACReturnSignal对象，订阅时会发信号 sendNext, sentComplated。 concat就是用来连接的，上个信号（returnSignal）结束后下个订阅者订阅下个信号（self）
+ */
 - (__kindof RACStream *)startWith:(id)value {
 	return [[[self.class return:value]
 		concat:self]

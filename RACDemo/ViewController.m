@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    id x = RACTuplePack(@"h");
     [self zipWith];
 }
 - (void)didReceiveMemoryWarning {
@@ -30,9 +32,9 @@
     //zipWith:把两个信号压缩成一个信号，只有当两个信号同时发出信号内容时，并且把两个信号的内容合并成一个元祖，才会触发压缩流的next事件。
     // 创建信号A
     RACSubject *signalA = [RACSubject subject];
-    [[signalA map:^id (id value) {
-        return @([value integerValue] *2);
-    }]subscribeNext:^(id  x) {
+    
+    RACDisposable *disposable = [signalA
+     subscribeNext:^(id  x) {
         NSLog(@"%@",x);
     } error:^(NSError * error) {
         NSLog(@"%@",error);
