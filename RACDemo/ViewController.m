@@ -18,7 +18,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self zipWith];
+   
+    
+    void (^testBlock)(void) = ^{
+         __block int anInteger = 42;
+        anInteger ++;
+        
+        NSLog(@"Integer is: %i", anInteger);
+    };
+    
+    testBlock();
+    testBlock();
+    testBlock();
+    testBlock();
+    testBlock();
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
