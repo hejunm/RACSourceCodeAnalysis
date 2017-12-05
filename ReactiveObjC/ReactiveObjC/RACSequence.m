@@ -27,19 +27,6 @@
 @property (nonatomic, strong) RACSequence *sequence;
 
 @end
-
-@interface RACSequence ()
-
-// Performs one iteration of lazy binding, passing through values from `current`
-// until the sequence is exhausted, then recursively binding the remaining
-// values in the receiver.
-//
-// Returns a new sequence which contains `current`, followed by the combined
-// result of all applications of `block` to the remaining values in the receiver.
-- (RACSequence *)bind:(RACSequenceBindBlock)block passingThroughValuesFromSequence:(RACSequence *)current;
-
-@end
-
 @implementation RACSequenceEnumerator
 
 - (id)nextObject {
@@ -52,6 +39,18 @@
 	
 	return object;
 }
+
+@end
+
+@interface RACSequence ()
+
+// Performs one iteration of lazy binding, passing through values from `current`
+// until the sequence is exhausted, then recursively binding the remaining
+// values in the receiver.
+//
+// Returns a new sequence which contains `current`, followed by the combined
+// result of all applications of `block` to the remaining values in the receiver.
+- (RACSequence *)bind:(RACSequenceBindBlock)block passingThroughValuesFromSequence:(RACSequence *)current;
 
 @end
 
@@ -97,17 +96,17 @@
 	// This relies on the implementation of RACDynamicSequence synchronizing
 	// access to its head, tail, and dependency, and we're only doing it because
 	// we really need the performance.
-	__block RACSequence *valuesSeq = self;
-	__block RACSequence *current = passthroughSequence;
+	__block RACSequence *valuesSeq = passthroughSequence;
+	__block RACSequence *current = self;
 	__block BOOL stop = NO;
 
 	RACSequence *sequence = [RACDynamicSequence sequenceWithLazyDependency:^ id {
-		while (current.head == nil) {
+		while (valuesSeq.head == nil) {
 			if (stop) return nil;
 
 			// We've exhausted the current sequence, create a sequence from the
 			// next value.
-			id value = valuesSeq.head;
+			id value = current.head;
 
 			if (value == nil) {
 				// We've exhausted all the sequences.
@@ -115,23 +114,22 @@
 				return nil;
 			}
 
-			current = (id)bindBlock(value, &stop);
-			if (current == nil) {
+			valuesSeq = (id)bindBlock(value, &stop);
+			if (valuesSeq == nil) {
 				stop = YES;
 				return nil;
 			}
 
-			valuesSeq = valuesSeq.tail;
+			current = current.tail;
 		}
 
-		NSCAssert([current isKindOfClass:RACSequence.class], @"-bind: block returned an object that is not a sequence: %@", current);
+		NSCAssert([valuesSeq isKindOfClass:RACSequence.class], @"-bind: block returned an object that is not a sequence: %@", valuesSeq);
 		return nil;
 	} headBlock:^(id _) {
-		return current.head;
+		return valuesSeq.head;
 	} tailBlock:^ id (id _) {
 		if (stop) return nil;
-
-		return [valuesSeq bind:bindBlock passingThroughValuesFromSequence:current.tail];
+		return [current bind:bindBlock passingThroughValuesFromSequence:valuesSeq.tail];
 	}];
 
 	sequence.name = self.name;
@@ -183,7 +181,17 @@
 	return [[self signalWithScheduler:[RACScheduler scheduler]] setNameWithFormat:@"[%@] -signal", self.name];
 }
 
+
 - (RACSignal *)signalWithScheduler:(RACScheduler *)scheduler {
+    /**
+     创建一个RACDynamicSignal信号， 这样在订阅时就会调用这个信号的block.
+     在该block中，使用scheduler执行reschedule block。
+     在reschedule block中遍历sequence中的所有值，并发送给订阅者。调用是递归进行d
+     
+     
+     */
+    
+    
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		__block RACSequence *sequence = self;
 

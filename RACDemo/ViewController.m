@@ -18,49 +18,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-   
-    
-    void (^testBlock)(void) = ^{
-         __block int anInteger = 42;
-        anInteger ++;
-        
-        NSLog(@"Integer is: %i", anInteger);
-    };
-    
-    testBlock();
-    testBlock();
-    testBlock();
-    testBlock();
-    testBlock();
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-- (void)zipWith {
-    //zipWith:把两个信号压缩成一个信号，只有当两个信号同时发出信号内容时，并且把两个信号的内容合并成一个元祖，才会触发压缩流的next事件。
-    // 创建信号A
-    RACSubject *signalA = [RACSubject subject];
-    [[signalA map:^id (id value) {
-        return @([value integerValue] *2);
-    }]subscribeNext:^(id  x) {
-        NSLog(@"%@",x);
-    } error:^(NSError * error) {
-        NSLog(@"%@",error);
-    } completed:^{
-        NSLog(@"结束");
+    RACSequence *sequence = [RACSequence sequenceWithHeadBlock:^id _Nullable{
+        return @1;
+    } tailBlock:^RACSequence * _Nonnull{
+        return [RACSequence sequenceWithHeadBlock:^id _Nullable{
+            return @2;
+        } tailBlock:^RACSequence * _Nonnull{
+            return [RACSequence return:@3];
+        }];
     }];
     
+    RACSequence *bindSequence = [sequence bind:^RACSequenceBindBlock _Nonnull{
+        return ^(NSNumber *value, BOOL *stop) {
+            NSLog(@"RACSequenceBindBlock: %@", value);
+            value = @(value.integerValue * 2);
+            return [RACSequence return:value];
+        };
+    }];
     
-    // 发送信号 交互顺序，元组内元素的顺序不会变，跟发送的顺序无关，而是跟压缩的顺序有关[signalA zipWith:signalB]---先是A后是B
-    [signalA sendNext:@1];
-    [signalA sendNext:@2];
-    [signalA sendNext:@3];
-    [signalA sendNext:@4];
-    [signalA sendNext:@5];
+    id tail =  bindSequence.tail.tail.tail;
     
+    NSLog(@"hha");
 }
 
 @end
