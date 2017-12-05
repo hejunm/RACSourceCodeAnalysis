@@ -90,50 +90,51 @@
 }
 
 - (RACSequence *)bind:(RACSequenceBindBlock)bindBlock passingThroughValuesFromSequence:(RACSequence *)passthroughSequence {
-	// Store values calculated in the dependency here instead, avoiding any kind
-	// of temporary collection and boxing.
-	//
-	// This relies on the implementation of RACDynamicSequence synchronizing
-	// access to its head, tail, and dependency, and we're only doing it because
-	// we really need the performance.
-	__block RACSequence *valuesSeq = passthroughSequence;
-	__block RACSequence *current = self;
-	__block BOOL stop = NO;
-
-	RACSequence *sequence = [RACDynamicSequence sequenceWithLazyDependency:^ id {
-		while (valuesSeq.head == nil) {
-			if (stop) return nil;
-
-			// We've exhausted the current sequence, create a sequence from the
-			// next value.
-			id value = current.head;
-
-			if (value == nil) {
-				// We've exhausted all the sequences.
-				stop = YES;
-				return nil;
-			}
-
-			valuesSeq = (id)bindBlock(value, &stop);
-			if (valuesSeq == nil) {
-				stop = YES;
-				return nil;
-			}
-
-			current = current.tail;
-		}
-
-		NSCAssert([valuesSeq isKindOfClass:RACSequence.class], @"-bind: block returned an object that is not a sequence: %@", valuesSeq);
-		return nil;
-	} headBlock:^(id _) {
-		return valuesSeq.head;
-	} tailBlock:^ id (id _) {
-		if (stop) return nil;
-		return [current bind:bindBlock passingThroughValuesFromSequence:valuesSeq.tail];
-	}];
-
-	sequence.name = self.name;
-	return sequence;
+    // Store values calculated in the dependency here instead, avoiding any kind
+    // of temporary collection and boxing.
+    //
+    // This relies on the implementation of RACDynamicSequence synchronizing
+    // access to its head, tail, and dependency, and we're only doing it because
+    // we really need the performance.
+    __block RACSequence *valuesSeq = self;
+    __block RACSequence *current = passthroughSequence;
+    __block BOOL stop = NO;
+    
+    RACSequence *sequence = [RACDynamicSequence sequenceWithLazyDependency:^ id {
+        while (current.head == nil) {
+            if (stop) return nil;
+            
+            // We've exhausted the current sequence, create a sequence from the
+            // next value.
+            id value = valuesSeq.head;
+            
+            if (value == nil) {
+                // We've exhausted all the sequences.
+                stop = YES;
+                return nil;
+            }
+            
+            current = (id)bindBlock(value, &stop);
+            if (current == nil) {
+                stop = YES;
+                return nil;
+            }
+            
+            valuesSeq = valuesSeq.tail;
+        }
+        
+        NSCAssert([current isKindOfClass:RACSequence.class], @"-bind: block returned an object that is not a sequence: %@", current);
+        return nil;
+    } headBlock:^(id _) {
+        return current.head;
+    } tailBlock:^ id (id _) {
+        if (stop) return nil;
+        
+        return [valuesSeq bind:bindBlock passingThroughValuesFromSequence:current.tail];
+    }];
+    
+    sequence.name = self.name;
+    return sequence;
 }
 
 - (RACSequence *)concat:(RACSequence *)sequence {
