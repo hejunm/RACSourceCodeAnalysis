@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922479.016684"
+            filePath = "ReactiveObjC/ReactiveObjC/RACSubject.m"
+            timestampString = "534001113.848243"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
-            landmarkName = "-bind:"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "-subscribe:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922480.275367"
+            filePath = "ReactiveObjC/ReactiveObjC/RACSubject.m"
+            timestampString = "534001225.428451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "-bind:"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "-subscribe:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922486.225499"
+            filePath = "ReactiveObjC/ReactiveObjC/RACSubject.m"
+            timestampString = "534001227.489751"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
-            landmarkName = "-bind:"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "-subscribe:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,108 +57,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922488.448399"
+            filePath = "ReactiveObjC/ReactiveObjC/RACSubject.m"
+            timestampString = "534001676.991069"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922513.359718"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922517.979762"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533922520.466317"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983920.822236"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "-bind:"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "-subscribe:"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__29-[RACSignal(RACStream) bind:]_block_invoke.87"
+                  symbolName = "-[RACSubject subscribe:]"
                   moduleName = "RACDemo"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AZ/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSignal.m"
-                  timestampString = "533983920.826456"
+                  urlString = "file:///Users/AZ/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSubject.m"
+                  timestampString = "534010141.326035"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "238">
+                  startingLineNumber = "70"
+                  endingLineNumber = "70"
+                  offsetFromSymbolStart = "733">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__29-[RACSignal(RACStream) bind:]_block_invoke_2.95"
+                  symbolName = "__24-[RACSubject subscribe:]_block_invoke"
                   moduleName = "RACDemo"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AZ/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSignal.m"
-                  timestampString = "533983920.829446"
+                  urlString = "file:///Users/AZ/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSubject.m"
+                  timestampString = "534010141.328946"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "16">
+                  startingLineNumber = "70"
+                  endingLineNumber = "70"
+                  offsetFromSymbolStart = "15">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -169,61 +105,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983958.173679"
+            filePath = "ReactiveObjC/ReactiveObjC/RACCompoundDisposable.m"
+            timestampString = "534001936.929017"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[RACSignal(RACStream) bind:]_block_invoke.87"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AZ/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSignal.m"
-                  timestampString = "533983958.180743"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "238">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[RACSignal(RACStream) bind:]_block_invoke_2.95"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AZ/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSignal.m"
-                  timestampString = "533983958.184418"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983959.043507"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "-bind:"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "-dispose"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -233,93 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983961.225101"
+            filePath = "ReactiveObjC/ReactiveObjC/RACCompoundDisposable.m"
+            timestampString = "534001939.723462"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983991.341842"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983996.179502"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533983997.870551"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533984025.996969"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "-bind:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ReactiveObjC/ReactiveObjC/RACSignal.m"
-            timestampString = "533984028.008764"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "-bind:"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "-dispose"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
