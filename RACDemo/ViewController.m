@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "ReactiveObjC.h"
+#import "RACArraySequence.h"
 
 @interface ViewController ()
 
@@ -18,27 +19,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    RACSequence *sequence = [RACSequence sequenceWithHeadBlock:^id _Nullable{
+    RACSequence *sequence1 = [RACSequence sequenceWithHeadBlock:^id _Nullable{
         return @1;
     } tailBlock:^RACSequence * _Nonnull{
-        return [RACSequence sequenceWithHeadBlock:^id _Nullable{
-            return @2;
-        } tailBlock:^RACSequence * _Nonnull{
-            return [RACSequence return:@3];
-        }];
+        return [RACSequence return:@2];
     }];
     
-    RACSequence *bindSequence = [sequence bind:^RACSequenceBindBlock _Nonnull{
-        return ^(NSNumber *value, BOOL *stop) {
-            NSLog(@"RACSequenceBindBlock: %@", value);
-            value = @(value.integerValue * 2);
-            return [RACSequence return:value];
+    RACSequence *sequence2 = [RACSequence sequenceWithHeadBlock:^id _Nullable{
+        return @3;
+    } tailBlock:^RACSequence * _Nonnull{
+        return [RACSequence return:@4];
+    }];
+    
+     RACSequence *seq = [[RACArraySequence sequenceWithArray:@[sequence1, sequence2] offset:0] bind:^{
+        return ^(id value, BOOL *stop) {
+            return value;
         };
     }];
     
-    id tail =  bindSequence.tail.tail.tail;
     
-    NSLog(@"hha");
+    id current;
+    NSEnumerator *en = seq.objectEnumerator;
+    while (current =  [en nextObject]) {
+        NSLog(@"%@",current);
+    }
+    
 }
 
 @end
