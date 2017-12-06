@@ -90,6 +90,16 @@
 }
 
 - (RACSequence *)bind:(RACSequenceBindBlock)bindBlock passingThroughValuesFromSequence:(RACSequence *)passthroughSequence {
+    /**
+     创建一个RACDynamicSequence， 在调用head 和 tail是会先执行dependencyBlock 然后执行headBlock和tailBlock.
+     bindBlock根据valuesSeq.head 返回一个值。 这个bind block给外界提供了操作元数据的接口。
+     
+     
+     
+     
+     */
+    
+    
     // Store values calculated in the dependency here instead, avoiding any kind
     // of temporary collection and boxing.
     //
@@ -101,6 +111,15 @@
     __block BOOL stop = NO;
     
     RACSequence *sequence = [RACDynamicSequence sequenceWithLazyDependency:^ id {
+       
+        
+        /**
+         处理两种情况：
+         1，当current.head 也是一个RACSequence是，比如[[RACArraySequence sequenceWithArray:@[sequence1, sequence2] offset:0] ，先遍历sequence1所有的，然后遍历sequence2所有的。这种情况是while (current.head == nil){} 一直不执行。
+         
+         2， 当 bindBlock(value, &stop); 返回RACEmptySequence 时，current.head=nil， 这样就会跳过value, 执行序列中的下个值。
+         也就实现了筛选过滤操作。
+         */
         while (current.head == nil) {
             if (stop) return nil;
             
