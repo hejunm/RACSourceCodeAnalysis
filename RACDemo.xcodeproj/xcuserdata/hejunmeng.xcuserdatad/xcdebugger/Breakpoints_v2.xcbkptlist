@@ -54,70 +54,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.483295"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.48362"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.483883"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.484305"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -161,6 +97,53 @@
             endingLineNumber = "105"
             landmarkName = "-bind:passingThroughValuesFromSequence:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RACSequence bind:passingThroughValuesFromSequence:]"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.913839"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "70">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_copy_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.915402"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.916956"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -214,54 +197,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.485112"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ViewController viewDidLoad]"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/RACDemo/ViewController.m"
-                  timestampString = "534164473.205346"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "21"
-                  endingLineNumber = "21"
-                  offsetFromSymbolStart = "68">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[ViewController viewDidLoad]_block_invoke"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/RACDemo/ViewController.m"
-                  timestampString = "534164473.207285"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "22"
-                  endingLineNumber = "22"
-                  offsetFromSymbolStart = "21">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -289,6 +224,53 @@
             endingLineNumber = "104"
             landmarkName = "-bind:passingThroughValuesFromSequence:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RACSequence bind:passingThroughValuesFromSequence:]"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.933296"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "70">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_copy_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.935539"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.937008"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -346,27 +328,42 @@
                   moduleName = "RACDemo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
-                  timestampString = "534166686.574199"
+                  timestampString = "534500232.947651"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "324">
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "70">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__53-[RACSequence bind:passingThroughValuesFromSequence:]_block_invoke"
+                  symbolName = "__Block_byref_object_copy_"
                   moduleName = "RACDemo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
-                  timestampString = "534166686.577274"
+                  timestampString = "534500232.949219"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "104"
-                  endingLineNumber = "104"
-                  offsetFromSymbolStart = "26">
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.950668"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -385,6 +382,53 @@
             endingLineNumber = "101"
             landmarkName = "-bind:passingThroughValuesFromSequence:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RACSequence bind:passingThroughValuesFromSequence:]"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.954874"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "70">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_copy_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.956794"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.958461"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -401,54 +445,53 @@
             endingLineNumber = "100"
             landmarkName = "-bind:passingThroughValuesFromSequence:"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.485608"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.485799"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534166686.485984"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RACSequence bind:passingThroughValuesFromSequence:]"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.962764"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "70">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_copy_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.964447"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.96596"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -465,6 +508,53 @@
             endingLineNumber = "109"
             landmarkName = "-bind:passingThroughValuesFromSequence:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[RACSequence bind:passingThroughValuesFromSequence:]"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.970066"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "70">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_copy_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.971704"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__Block_byref_object_dispose_"
+                  moduleName = "RACDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
+                  timestampString = "534500232.973163"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -513,86 +603,6 @@
             endingLineNumber = "126"
             landmarkName = "-bind:passingThroughValuesFromSequence:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__53-[RACSequence bind:passingThroughValuesFromSequence:]_block_invoke"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
-                  timestampString = "534166931.671643"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "126"
-                  endingLineNumber = "126"
-                  offsetFromSymbolStart = "480">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__53-[RACSequence bind:passingThroughValuesFromSequence:]_block_invoke"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/ReactiveObjC/ReactiveObjC/RACSequence.m"
-                  timestampString = "534166931.67382"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "126"
-                  endingLineNumber = "126"
-                  offsetFromSymbolStart = "577">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RACDemo/ViewController.m"
-            timestampString = "534167473.190081"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[ViewController viewDidLoad]_block_invoke_5"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/RACDemo/ViewController.m"
-                  timestampString = "534167473.296638"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "35"
-                  endingLineNumber = "35"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__29-[ViewController viewDidLoad]_block_invoke_6"
-                  moduleName = "RACDemo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hejunmeng/Desktop/RACSourceCodeAnalysis/RACDemo/ViewController.m"
-                  timestampString = "534167473.297869"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36"
-                  offsetFromSymbolStart = "60">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
