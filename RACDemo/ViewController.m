@@ -18,6 +18,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    UITextField *tf = [[UITextField alloc]initWithFrame:CGRectMake(30, 60, 60, 20)];
+    tf.backgroundColor = [UIColor redColor];
+    [self.view addSubview:tf];
+    
+    [[tf.rac_textSignal throttle:10] subscribeNext:^(NSString *x) {
+        NSLog(@"%@",x);
+    }];
 }
 
 @end

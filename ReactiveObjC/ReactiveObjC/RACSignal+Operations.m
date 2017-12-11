@@ -154,11 +154,15 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 
 		void (^flushNext)(BOOL send) = ^(BOOL send) {
 			@synchronized (compoundDisposable) {
+                /**
+                 根据- (RACDisposable *)after:(NSDate *)date schedule:(void (^)(void))block的实现
+                 当调用[nextDisposable.disposable dispose]后， 延时执行的block不会再执行了。具体可以看下RACScheduler代码
+                 */
 				[nextDisposable.disposable dispose];
-
-				if (!hasNextValue) return;
-				if (send) [subscriber sendNext:nextValue];
-
+				if (!hasNextValue) return; //没有值，直接返回。
+                if (send) {
+                    [subscriber sendNext:nextValue];
+                }
 				nextValue = nil;
 				hasNextValue = NO;
 			}
@@ -170,13 +174,15 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 
 			@synchronized (compoundDisposable) {
 				flushNext(NO);
-				if (!shouldThrottle) {
+                if (!shouldThrottle) {//predicate block返回NO: 直接发送值给订阅者。
 					[subscriber sendNext:x];
 					return;
 				}
 
 				nextValue = x;
 				hasNextValue = YES;
+                
+                //延时执行的block。
 				nextDisposable.disposable = [delayScheduler afterDelay:interval schedule:^{
 					flushNext(YES);
 				}];
@@ -185,6 +191,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 			[compoundDisposable dispose];
 			[subscriber sendError:error];
 		} completed:^{
+            //结束时，如果有值，将这个值发出去。
 			flushNext(YES);
 			[subscriber sendCompleted];
 		}];

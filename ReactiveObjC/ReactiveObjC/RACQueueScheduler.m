@@ -66,7 +66,6 @@
 		if (disposable.disposed) return;
 		[self performAsCurrentScheduler:block];
 	});
-
 	return disposable;
 }
 
