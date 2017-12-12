@@ -51,7 +51,6 @@
     [sub sendError:[NSError errorWithDomain:@"fh" code:1 userInfo:nil]];
     [sub sendNext:@"hello4"];
     [sub sendCompleted];
-    
 }
 
 @end
