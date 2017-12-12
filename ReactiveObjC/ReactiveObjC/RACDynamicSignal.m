@@ -45,6 +45,11 @@
      当subscriber1 调用sendError 或 sendComplate时，disposable1会执行dispose方法，这时会遍历其保存的所有的disposable并执行dispose，完成资源释放。
      当subscriber1 delloc时,也会调用disposable1的dispose方法。
      之后再执行sendNest,sendError,sendComplate就不会执行了。
+     
+     一个订阅者可以订阅多个信号。该方法返回disposable用于释放本次订阅产生的资源。
+     
+     如果订阅者执行 dispose， 那么释放与该订阅者相关的所有资源。
+     
      */
    
 	subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];
