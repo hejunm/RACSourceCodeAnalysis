@@ -381,8 +381,10 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -collect", self.name];
 }
 
+//保存信号源发送的value,直到信号发送结束信号。在completed中将保存的value发给订阅者。
 - (RACSignal *)takeLast:(NSUInteger)count {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
+        //
 		NSMutableArray *valuesTaken = [NSMutableArray arrayWithCapacity:count];
 		return [self subscribeNext:^(id x) {
 			[valuesTaken addObject:x ? : RACTupleNil.tupleNil];
@@ -640,6 +642,26 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 		startWith:start]
 		takeLast:1]
 		setNameWithFormat:@"[%@] -aggregateWithStart: %@ reduceWithIndex:", self.name, RACDescription(start)];
+}
+
+- (RACSignal *)collectMethod{
+    //延迟信号的创建，只有在订阅时才创建信号。
+    return  [RACSignal defer:^{
+        NSMutableArray *start = [[NSMutableArray alloc] init];
+        
+        //收集信号发送的value到数组中
+        RACSignal *signal = [self scanWithStart:start reduce:^id (NSMutableArray *collectedValues, id x) {
+            [collectedValues addObject:(x ?: NSNull.null)];
+            return collectedValues;
+        }];
+        
+        //以空数组开头。这样如果原始信号没有发过value时，订阅者可以接收到空数组。
+        signal = [signal startWith:start];
+        
+        //
+        signal = [signal takeLast:1];
+        return signal;
+    }];
 }
 
 - (RACDisposable *)setKeyPath:(NSString *)keyPath onObject:(NSObject *)object {
