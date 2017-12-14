@@ -570,6 +570,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 			}];
 		};
 
+        //订阅原信号，原信号
 		[compoundDisposable addDisposable:[self subscribeNext:^(RACSignal *signal) {
 			if (signal == nil) return;
 
@@ -658,7 +659,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
         //以空数组开头。这样如果原始信号没有发过value时，订阅者可以接收到空数组。
         signal = [signal startWith:start];
         
-        //
+        //只有在信号结束时，才将数据发给订阅者。信号发出的最后一个value。
         signal = [signal takeLast:1];
         return signal;
     }];

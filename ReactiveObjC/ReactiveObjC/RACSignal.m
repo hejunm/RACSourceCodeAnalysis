@@ -90,7 +90,7 @@
 	return [RACReturnSignal return:value];
 }
 
-- (RACSignal *)bind:(RACSignalBindBlock (^)(void))block {
+- (RACSignal *)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               bind:(RACSignalBindBlock (^)(void))block {
 	NSCParameterAssert(block != NULL);
 
     /**
