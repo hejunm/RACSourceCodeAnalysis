@@ -20,19 +20,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UITextField *tf = [[UITextField alloc]initWithFrame:CGRectMake(30, 60, 60, 20)];
-    tf.backgroundColor = [UIColor redColor];
-    [self.view addSubview:tf];
-                     
-    NSMutableArray *start = [[NSMutableArray alloc] init];
-//    RACSignal *signal = [tf.rac_textSignal scanWithStart:start reduce:^id (NSMutableArray *collectedValues, id x) {
-//        [collectedValues addObject:(x ?: NSNull.null)];
-//        return collectedValues;
-//    }];
-//    [signal subscribeNext:^(id x) {
-//        NSLog(@"%@",x);
-//    }];
-    
 }
 
 

@@ -248,6 +248,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -repeat", self.name];
 }
 
+/**
+ 当原信号发型error 时，订阅者订阅cactchBlock返回的信号。
+ */
 - (RACSignal *)catch:(RACSignal * (^)(NSError *error))catchBlock {
 	NSCParameterAssert(catchBlock != NULL);
 
@@ -277,6 +280,11 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -catchTo: %@", self.name, signal];
 }
 
+/**
+ 在block中执行可能会出错的操作。
+ 在出错是，block返回nil， 并将NSError对象赋给errorPtr。订阅者会订阅[RACSignal error:error]
+ 如果没有出错，返回value, 订阅者会订阅[RACSignal return:value]。
+ */
 + (RACSignal *)try:(id (^)(NSError **errorPtr))tryBlock {
 	NSCParameterAssert(tryBlock != NULL);
 
@@ -288,6 +296,11 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"+try:"];
 }
 
+/**
+ fattenMap 是将一个value map 到一个signal。
+ 这里会将value 映射成[RACSignal return:value] 或者[RACSignal error:error]。
+ 具体会映射成什么要根据block的返回值确定。如果passed == NO， 要对errorPtr 进行赋值。
+ */
 - (RACSignal *)try:(BOOL (^)(id value, NSError **errorPtr))tryBlock {
 	NSCParameterAssert(tryBlock != NULL);
 
@@ -298,6 +311,13 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -try:", self.name];
 }
 
+/**
+ 与上面的相似。 这里会将valeu映射成[RACSignal return:mappedValue] 或[RACSignal error:error]。
+ 其中mappedValue 是将value传到mapBlock 得到的结果。
+ 当mappedValue有值时，返回[RACSignal return:mappedValue]。
+ 当mappedValue==nil,返回[RACSignal error:error]。 并对errorPtr赋值。
+ 
+ */
 - (RACSignal *)tryMap:(id (^)(id value, NSError **errorPtr))mapBlock {
 	NSCParameterAssert(mapBlock != NULL);
 
@@ -606,6 +626,8 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -flatten: %lu", self.name, (unsigned long)maxConcurrent];
 }
 
+
+//self信号结束后，订阅者开始订阅block返回的信号。
 - (RACSignal *)then:(RACSignal * (^)(void))block {
 	NSCParameterAssert(block != nil);
 
@@ -637,9 +659,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 		setNameWithFormat:@"[%@] -aggregateWithStart: %@ reduce:", self.name, RACDescription(start)];
 }
 
+
 - (RACSignal *)aggregateWithStart:(id)start reduceWithIndex:(id (^)(id, id, NSUInteger))reduceBlock {
-	return [[[[self
-		scanWithStart:start reduceWithIndex:reduceBlock]
+	return [[[[self scanWithStart:start reduceWithIndex:reduceBlock]
 		startWith:start]
 		takeLast:1]
 		setNameWithFormat:@"[%@] -aggregateWithStart: %@ reduceWithIndex:", self.name, RACDescription(start)];
@@ -650,7 +672,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
     return  [RACSignal defer:^{
         NSMutableArray *start = [[NSMutableArray alloc] init];
         
-        //收集信号发送的value到数组中
+        //收集信号发送的value到数组中. block中第一个参数是block上次执行返回的value,第二个参数是sendNext发的value。
         RACSignal *signal = [self scanWithStart:start reduce:^id (NSMutableArray *collectedValues, id x) {
             [collectedValues addObject:(x ?: NSNull.null)];
             return collectedValues;
@@ -731,6 +753,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 
 		while (YES) {
 			void *ptr = objectPtr;
+            //原子操作
 			if (OSAtomicCompareAndSwapPtrBarrier(ptr, NULL, &objectPtr)) {
 				break;
 			}
@@ -767,10 +790,15 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
 		void (^triggerCompletion)(void) = ^{
-			[disposable dispose];
+			/**
+             感觉这个可以不写，因为dynamicSignal在被订阅时会将createSignal的参数block 中返回的disposable添加到订阅者自身的disposable中
+             写了也没事。
+             */
+            [disposable dispose];
 			[subscriber sendCompleted];
 		};
 
+        //订阅signalTrigger。当收到signalTrigger的sendNext,complate时，订阅者解除对self的订阅。
 		RACDisposable *triggerDisposable = [signalTrigger subscribeNext:^(id _) {
 			triggerCompletion();
 		} completed:^{
@@ -811,6 +839,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 			[subscriber sendCompleted];
 		}];
 
+        //concat [RACSignal never]可以保证订阅者不会收到结束事件
 		if (!selfDisposable.disposed) {
 			selfDisposable.disposable = [[self
 				concat:[RACSignal never]]
