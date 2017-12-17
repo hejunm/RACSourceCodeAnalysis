@@ -925,6 +925,15 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return [self firstOrDefault:defaultValue success:NULL error:NULL];
 }
 
+
+/**
+ 这是一个阻塞当前线程的方法。
+ 可以看成生产者，消费者。
+ 调用这个方法后，当前线程wait（消费者）。等待生产者发送事件。
+ 信号充当生产者的角色。信号发送事件后，会将相应的值保存，并通知消费者有数据了，可以去数据了。
+ 
+ 生产者和消费者不能在一个线程操作。否则会产生死锁。
+ */
 - (id)firstOrDefault:(id)defaultValue success:(BOOL *)success error:(NSError **)error {
 	NSCondition *condition = [[NSCondition alloc] init];
 	condition.name = [NSString stringWithFormat:@"[%@] -firstOrDefault: %@ success:error:", self.name, defaultValue];
@@ -936,14 +945,21 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	__block NSError *localError;
 	__block BOOL localSuccess;
 
+    //take: 只取第一个
 	[[self take:1] subscribeNext:^(id x) {
-		[condition lock];
+		/**
+         加锁。会阻塞当前线程，直到获得锁。只要得到了锁，其他线程会等待这个锁的释放。
+         */
+        [condition lock];
 
 		value = x;
 		localSuccess = YES;
 
 		done = YES;
+        //唤醒正在等待这个锁的其他线程。
 		[condition broadcast];
+     
+        //执行完后，释放锁。要和lock 成对出现。
 		[condition unlock];
 	} error:^(NSError *e) {
 		[condition lock];
@@ -967,8 +983,11 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 		[condition unlock];
 	}];
 
+    
+    
 	[condition lock];
 	while (!done) {
+        //阻塞当前线程，直到condition调用broadcast或signal。
 		[condition wait];
 	}
 
@@ -979,6 +998,12 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return value;
 }
 
+/**
+ 阻塞当前线程
+ 忽略信号发的所有值
+ 当信号发送 send Complate 或 error 时，返回是否成功。
+ 当send error时，会将error赋值给error.
+ */
 - (BOOL)waitUntilCompleted:(NSError **)error {
 	BOOL success = NO;
 

@@ -20,6 +20,16 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    RACSubject *sub = [RACSubject subject];
+    [[RACScheduler scheduler]schedule:^{
+        id value = [sub first];
+        NSLog(@"%@",value);
+    }];
+    
+    [[RACScheduler scheduler] afterDelay:30 schedule:^{
+        [sub sendNext:@"1"];
+    }];
+    
 }
 
 
