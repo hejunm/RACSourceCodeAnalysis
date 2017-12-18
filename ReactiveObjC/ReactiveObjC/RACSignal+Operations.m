@@ -853,6 +853,13 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}];
 }
 
+/**
+ 用途：原信号通过sendNext发送的子信号, 订阅者订阅子信号。当有有新的子信号时，订阅者订阅新的子信号，不在订阅原来的子信号。
+ 1,调用switchToLatest的信号sendNext 发送的value必须是个信号（子信号）。
+ 2,订阅者会订阅子信号，直到[connection.signal concat:[RACSignal never]] 发送next和complate
+ 3，订阅者订阅信号 [connection.signal concat:[RACSignal never]]，只会收到sendNext，不会收到complate。
+ 这样也就保证了订阅者订阅子信号时， 如果原信号结束，订阅者不会结束对子信号的订阅。
+ */
 - (RACSignal *)switchToLatest {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		RACMulticastConnection *connection = [self publish];
@@ -875,6 +882,25 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -switchToLatest", self.name];
 }
 
+
+/**
+ 分两个阶段操作：
+ 1.升阶。将发送值的信号转变成发送信号的信号。（只用发送信号的信号才执行switchToLatest操作）
+ 执行map后，完成信号的升阶。 即信号sendNext发的value是信号。
+ 这个map操作如下：
+ 假如cases内容为：
+ @{
+ @"1":signal1,
+ @"2":signal2,
+ @"3":signal3,
+ }
+ 以原信号发送的值为key， map的结果是cases[key]对应的信号。
+ 
+ 
+ 
+ 2.
+ 然后对发送信号的信号 执行switchToLatest操作。
+ */
 + (RACSignal *)switch:(RACSignal *)signal cases:(NSDictionary *)cases default:(RACSignal *)defaultSignal {
 	NSCParameterAssert(signal != nil);
 	NSCParameterAssert(cases != nil);
