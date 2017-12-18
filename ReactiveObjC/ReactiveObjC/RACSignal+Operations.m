@@ -885,7 +885,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 
 /**
  分两个阶段操作：
- 1.升阶。将发送值的信号转变成发送信号的信号。（只用发送信号的信号才执行switchToLatest操作）
+ 1.升阶。将发送值的信号转变成发送信号的信号。（只用发送信号的信号才可以  执行switchToLatest操作）
  执行map后，完成信号的升阶。 即信号sendNext发的value是信号。
  这个map操作如下：
  假如cases内容为：
@@ -895,8 +895,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
  @"3":signal3,
  }
  以原信号发送的值为key， map的结果是cases[key]对应的信号。
- 
- 
+ 如信号发送1，得到的信号就是signal1。
  
  2.
  然后对发送信号的信号 执行switchToLatest操作。
