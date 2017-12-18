@@ -927,6 +927,11 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 		setNameWithFormat:@"+switch: %@ cases: %@ default: %@", signal, cases, defaultSignal];
 }
 
+/**
+ Switches between `trueSignal` and `falseSignal` based on the latest value sent by `boolSignal`.
+ 
+ 简单，和switch:case:default: 原理一致。 就是改变了下map的逻辑。
+ */
 + (RACSignal *)if:(RACSignal *)boolSignal then:(RACSignal *)trueSignal else:(RACSignal *)falseSignal {
 	NSCParameterAssert(boolSignal != nil);
 	NSCParameterAssert(trueSignal != nil);
@@ -942,10 +947,16 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 		setNameWithFormat:@"+if: %@ then: %@ else: %@", boolSignal, trueSignal, falseSignal];
 }
 
+/**
+ 阻塞当前线程
+ */
 - (id)first {
 	return [self firstOrDefault:nil];
 }
 
+/**
+ 阻塞当前线程
+ */
 - (id)firstOrDefault:(id)defaultValue {
 	return [self firstOrDefault:defaultValue success:NULL error:NULL];
 }
@@ -1048,6 +1059,10 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"+defer:"];
 }
 
+/**
+ 1, [self collect] 收集信号发的所有value.直到结束。
+ 2, first, 阻塞当前线程，直到接受到信号发的值。也就是[self collect] 发的数组。
+ */
 - (NSArray *)toArray {
 	return [[[self collect] first] copy];
 }

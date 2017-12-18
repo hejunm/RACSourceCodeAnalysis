@@ -20,10 +20,10 @@ const NSUInteger RACReplaySubjectUnlimitedCapacity = NSUIntegerMax;
 @property (nonatomic, assign, readonly) NSUInteger capacity;
 
 // These properties should only be modified while synchronized on self.
-@property (nonatomic, strong, readonly) NSMutableArray *valuesReceived;
-@property (nonatomic, assign) BOOL hasCompleted;
-@property (nonatomic, assign) BOOL hasError;
-@property (nonatomic, strong) NSError *error;
+@property (nonatomic, strong, readonly) NSMutableArray *valuesReceived; //用于保存sendNext发送的value.
+@property (nonatomic, assign) BOOL hasCompleted; //标志位，标记信号是否结束。
+@property (nonatomic, assign) BOOL hasError; //标志位，标记是否发过error
+@property (nonatomic, strong) NSError *error;//当发过error,保存该error。
 
 @end
 
@@ -32,6 +32,7 @@ const NSUInteger RACReplaySubjectUnlimitedCapacity = NSUIntegerMax;
 
 #pragma mark Lifecycle
 
+//初始化参数
 + (instancetype)replaySubjectWithCapacity:(NSUInteger)capacity {
 	return [(RACReplaySubject *)[self alloc] initWithCapacity:capacity];
 }
@@ -50,7 +51,7 @@ const NSUInteger RACReplaySubjectUnlimitedCapacity = NSUIntegerMax;
 }
 
 #pragma mark RACSignal
-
+//当订阅该subscriber时， 将保存的历史信息重放给订阅者。
 - (RACDisposable *)subscribe:(id<RACSubscriber>)subscriber {
 	RACCompoundDisposable *compoundDisposable = [RACCompoundDisposable compoundDisposable];
 
@@ -81,18 +82,20 @@ const NSUInteger RACReplaySubjectUnlimitedCapacity = NSUIntegerMax;
 }
 
 #pragma mark RACSubscriber
-
+//发送信号并保存
 - (void)sendNext:(id)value {
 	@synchronized (self) {
 		[self.valuesReceived addObject:value ?: RACTupleNil.tupleNil];
 		[super sendNext:value];
 		
+        //如果设置了容量，溢出时，移除原来的。
 		if (self.capacity != RACReplaySubjectUnlimitedCapacity && self.valuesReceived.count > self.capacity) {
 			[self.valuesReceived removeObjectsInRange:NSMakeRange(0, self.valuesReceived.count - self.capacity)];
 		}
 	}
 }
 
+//发送结束，并保存
 - (void)sendCompleted {
 	@synchronized (self) {
 		self.hasCompleted = YES;
@@ -100,6 +103,7 @@ const NSUInteger RACReplaySubjectUnlimitedCapacity = NSUIntegerMax;
 	}
 }
 
+//发送error，并保存
 - (void)sendError:(NSError *)e {
 	@synchronized (self) {
 		self.hasError = YES;
