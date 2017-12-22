@@ -1067,22 +1067,39 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return [[[self collect] first] copy];
 }
 
+/**
+ 将信号转成序列。
+ RACSignalSequence的源码有分析， 同步的获得head，是阻塞当前线程的。
+ */
 - (RACSequence *)sequence {
 	return [[RACSignalSequence sequenceWithSignal:self] setNameWithFormat:@"[%@] -sequence", self.name];
 }
 
+/**
+ 创建一个RACMulticastConnection 并返回。
+ 用于多播。
+ */
 - (RACMulticastConnection *)publish {
 	RACSubject *subject = [[RACSubject subject] setNameWithFormat:@"[%@] -publish", self.name];
 	RACMulticastConnection *connection = [self multicast:subject];
 	return connection;
 }
 
+/**
+ 调用[connection connect]后， subject会订阅self发送的事件。
+ subject 可以被多个订阅者订阅。这样实现的效果就是原信号self发送一个事件，多个订阅者可以收到事件。
+ 从而实现多播。
+ */
 - (RACMulticastConnection *)multicast:(RACSubject *)subject {
 	[subject setNameWithFormat:@"[%@] -multicast: %@", self.name, subject.name];
 	RACMulticastConnection *connection = [[RACMulticastConnection alloc] initWithSourceSignal:self subject:subject];
 	return connection;
 }
 
+/**
+ RACReplaySubject会订阅原信号发送的事件并将这些事件保存起来。
+ 当订阅和订阅RACReplaySubject时， 会将保存的事件回放给订阅者。
+ */
 - (RACSignal *)replay {
 	RACReplaySubject *subject = [[RACReplaySubject subject] setNameWithFormat:@"[%@] -replay", self.name];
 
@@ -1092,6 +1109,10 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return connection.signal;
 }
 
+/**
+ RACReplaySubject Capacity=1，也就是只保存最新的事件。
+ 然后其他的就和replay一样了。
+ */
 - (RACSignal *)replayLast {
 	RACReplaySubject *subject = [[RACReplaySubject replaySubjectWithCapacity:1] setNameWithFormat:@"[%@] -replayLast", self.name];
 
@@ -1101,6 +1122,10 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return connection.signal;
 }
 
+/**
+ 懒订阅（在订阅者订阅时，RACReplaySubject才订阅原信号（self））
+ 也就是RACReplaySubject在首次被订阅时，才开始保存原信号（self）发送的事件。
+ */
 - (RACSignal *)replayLazily {
 	RACMulticastConnection *connection = [self multicast:[RACReplaySubject subject]];
 	return [[RACSignal
@@ -1111,6 +1136,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 		setNameWithFormat:@"[%@] -replayLazily", self.name];
 }
 
+/**
+ 阎王要你三更死谁敢留你到五更
+ */
 - (RACSignal *)timeout:(NSTimeInterval)interval onScheduler:(RACScheduler *)scheduler {
 	NSCParameterAssert(scheduler != nil);
 	NSCParameterAssert(scheduler != RACScheduler.immediateScheduler);
@@ -1118,6 +1146,7 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
 
+        //设置一个定时任务，如果信号还健在，就给他发个超时error.
 		RACDisposable *timeoutDisposable = [scheduler afterDelay:interval schedule:^{
 			[disposable dispose];
 			[subscriber sendError:[NSError errorWithDomain:RACSignalErrorDomain code:RACSignalErrorTimedOut userInfo:nil]];
@@ -1140,6 +1169,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -timeout: %f onScheduler: %@", self.name, (double)interval, scheduler];
 }
 
+/**
+指定执行nextBlock，complateBlock，errorBlock所在的线程。
+ */
 - (RACSignal *)deliverOn:(RACScheduler *)scheduler {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		return [self subscribeNext:^(id x) {
@@ -1158,6 +1190,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -deliverOn: %@", self.name, scheduler];
 }
 
+/**
+ 正如方法名，指定订阅信号所在的线程。
+ */
 - (RACSignal *)subscribeOn:(RACScheduler *)scheduler {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
@@ -1176,7 +1211,13 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 - (RACSignal *)deliverOnMainThread {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		__block volatile int32_t queueLength = 0;
-		
+		/**
+         有个问题需要注意：
+         当block正在主线程中执行(假如是个耗时操作)，信号又发了一个事件。这时需要执行else部分代码。
+         这就是queued的作用。
+         执行performOnMainThread，queueLength就会+1，执行完后再-1.
+         当>1说明还有block在主线中没有执行完。这时就地异步的在主线程队列中添加一个任务。
+         */
 		void (^performOnMainThread)(dispatch_block_t) = ^(dispatch_block_t block) {
 			int32_t queued = OSAtomicIncrement32(&queueLength);
 			if (NSThread.isMainThread && queued == 1) {
@@ -1206,6 +1247,14 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 	}] setNameWithFormat:@"[%@] -deliverOnMainThread", self.name];
 }
 
+
+/**
+接受原信号发送的value，然后调用keyBlock进行分组。keyBlock返回值相同的为一组。
+返回值为发送信号的信号。
+原信号发送的值会会通过对应的RACGroupedSignal进行转发。
+RACGroupedSignal信号发送的值为transform计算得到的结果（如果传了这个block）
+
+ */
 - (RACSignal *)groupBy:(id<NSCopying> (^)(id object))keyBlock transform:(id (^)(id object))transformBlock {
 	NSCParameterAssert(keyBlock != NULL);
 

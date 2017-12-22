@@ -21,14 +21,18 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     RACSubject *sub = [RACSubject subject];
-    [[RACScheduler scheduler]schedule:^{
-        id value = [sub first];
-        NSLog(@"%@",value);
+    [[sub subscribeOn:[RACScheduler scheduler]]subscribeNext:^(id x) {
+        NSLog(@"%@",[NSThread currentThread]);
+        NSLog(@"hf");
     }];
     
-    [[RACScheduler scheduler] afterDelay:30 schedule:^{
-        [sub sendNext:@"1"];
-    }];
+    [NSThread sleepForTimeInterval:20];
+    [sub sendNext:@"helo"];
+    
+    NSLog(@"fhkdj");
+    
+    
+    
     
 }
 
