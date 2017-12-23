@@ -127,6 +127,13 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 	return disposable;
 }
 
+/**
+ 将递归转变成迭代
+ 通过recursiveBlock将其参数reschedule block传给调用方， 当调用方在recursiveBlock 中调用reschedule block
+ 就会在执行一次递归（在schedule对应的线程中添加任务）。
+ 
+ 执行顺序见代码中的标注。
+ */
 - (void)scheduleRecursiveBlock:(RACSchedulerRecursiveBlock)recursiveBlock addingToDisposable:(RACCompoundDisposable *)disposable {
 	@autoreleasepool {
 		RACCompoundDisposable *selfDisposable = [RACCompoundDisposable compoundDisposable];
@@ -134,6 +141,7 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 
 		__weak RACDisposable *weakSelfDisposable = selfDisposable;
 
+        //(1) 按照异步串行队列来分析吧。一般都是异步串行队列。
 		RACDisposable *schedulingDisposable = [self schedule:^{
 			@autoreleasepool {
 				// At this point, we've been invoked, so our disposable is now useless.
@@ -142,6 +150,11 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 
 			if (disposable.disposed) return;
 
+            //(6)
+            /**
+             这里进行递归调用。
+             其实就是向出串行队列中添加异步任务。当disposable disposed了， 就不分发了。
+             */
 			void (^reallyReschedule)(void) = ^{
 				if (disposable.disposed) return;
 				[self scheduleRecursiveBlock:recursiveBlock addingToDisposable:disposable];
@@ -162,7 +175,18 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 			__block BOOL rescheduleImmediately = NO;
 
 			@autoreleasepool {
+                //(2)
+                /**
+                 执行调用者传的block。
+                 并且给这个block传递一个参数reschedule block，供调用方调用。
+                 */
 				recursiveBlock(^{
+                    //(3)
+                    /**
+                     当调用方在recursiveBlock中调用reschedule block时，由于rescheduleImmediately为NO所以 reallyReschedule（）不会执行，
+                     rescheduleCount 记录reschedule block调用的次数。
+                     通过锁保证线程安全。
+                     */
 					[lock lock];
 					BOOL immediate = rescheduleImmediately;
 					if (!immediate) ++rescheduleCount;
@@ -171,12 +195,21 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 					if (immediate) reallyReschedule();
 				});
 			}
-
+            //(4)
+            /**
+             recursiveBlock执行完后，设置rescheduleImmediately = yes.
+             */
 			[lock lock];
 			NSUInteger synchronousCount = rescheduleCount;
 			rescheduleImmediately = YES;
 			[lock unlock];
 
+            //（5）
+            /**
+             开始分发喽。
+             也就是将递归转成迭代。
+             reschedule block调用几次，reallyReschedule就会调用几次。
+             */
 			for (NSUInteger i = 0; i < synchronousCount; i++) {
 				reallyReschedule();
 			}

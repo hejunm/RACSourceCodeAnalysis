@@ -1298,12 +1298,16 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	}] setNameWithFormat:@"[%@] -any", self.name];
 }
 
+/**
+ *stop = YES，导致订阅者只会订阅一次[RACSignal return:@NO] 或者 [RACSignal return:@YES]
+ 如果在接收到原信号的的value之前，原信号结束或者发error，那么订阅者会收到订阅[RACSignal return:@NO]
+ */
 - (RACSignal *)any:(BOOL (^)(id object))predicateBlock {
 	NSCParameterAssert(predicateBlock != NULL);
 
 	return [[[self materialize] bind:^{
 		return ^(RACEvent *event, BOOL *stop) {
-			if (event.finished) {
+			if (event.finished) {//原信号结束或者sendError
 				*stop = YES;
 				return [RACSignal return:@NO];
 			}
@@ -1338,12 +1342,16 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	}] setNameWithFormat:@"[%@] -all:", self.name];
 }
 
+/**
+ 重试，重试次数为retryCount。
+ 就是在接受到error时，不将error转发给订阅者。
+ */
 - (RACSignal *)retry:(NSInteger)retryCount {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
 		__block NSInteger currentRetryCount = 0;
 		return subscribeForever(self,
 			^(id x) {
-				[subscriber sendNext:x];
+				[subscriber sendNext:x]; 
 			},
 			^(NSError *error, RACDisposable *disposable) {
 				if (retryCount == 0 || currentRetryCount < retryCount) {
