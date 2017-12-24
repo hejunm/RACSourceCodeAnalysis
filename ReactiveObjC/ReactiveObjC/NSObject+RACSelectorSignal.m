@@ -55,6 +55,7 @@ static BOOL RACForwardInvocation(id self, NSInvocation *invocation) {
 	return YES;
 }
 
+//替换某个类的forwardInvocation方法。
 static void RACSwizzleForwardInvocation(Class class) {
 	SEL forwardInvocationSEL = @selector(forwardInvocation:);
 	Method forwardInvocationMethod = class_getInstanceMethod(class, forwardInvocationSEL);
@@ -235,6 +236,7 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 	}
 }
 
+//获取方法的别名。也就是在原方法名前面添加一个前缀rac_alias_。
 static SEL RACAliasForSelector(SEL originalSelector) {
 	NSString *selectorName = NSStringFromSelector(originalSelector);
 	return NSSelectorFromString([RACSignalForSelectorAliasPrefix stringByAppendingString:selectorName]);

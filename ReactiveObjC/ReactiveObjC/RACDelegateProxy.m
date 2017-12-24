@@ -26,6 +26,7 @@
 
 	self = [super init];
 
+    //使用runtime 让这个类实现协议
 	class_addProtocol(self.class, protocol);
 
 	_protocol = protocol;

@@ -706,6 +706,10 @@ extern const NSInteger RACSignalErrorNoMatchingCase;
 ///
 /// Returns a signal of the result of applying the first element of each tuple
 /// to the remaining elements.
+/**
+ 第一个参数是RACReturnSignal, value是一个block。
+ 会玩，服！
+ */
 - (RACSignal *)reduceApply RAC_WARN_UNUSED_RESULT;
 
 @end

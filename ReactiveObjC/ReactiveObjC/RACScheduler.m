@@ -130,7 +130,7 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 /**
  将递归转变成迭代
  通过recursiveBlock将其参数reschedule block传给调用方， 当调用方在recursiveBlock 中调用reschedule block
- 就会在执行一次递归（在schedule对应的线程中添加任务）。
+ 就会执行一次递归（在schedule对应的线程中添加任务）。
  
  执行顺序见代码中的标注。
  */
@@ -148,6 +148,7 @@ NSString * const RACSchedulerCurrentSchedulerKey = @"RACSchedulerCurrentSchedule
 				[disposable removeDisposable:weakSelfDisposable];
 			}
 
+            //(7)
 			if (disposable.disposed) return;
 
             //(6)

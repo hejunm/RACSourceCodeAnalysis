@@ -37,6 +37,12 @@ extern NSString * const RACUnderlyingCommandErrorKey;
 /// 
 /// Only executions that begin _after_ subscription will be sent upon this
 /// signal. All inner signals will arrive upon the main thread.
+/**
+ 发送信号的信号。发送的信号就是执行signalBlock()返回的结果。当然需要满足条件在能执行signalBlock()。
+ 执行条件：
+ 也就是下面enabled信号。
+ 
+ */
 @property (nonatomic, strong, readonly) RACSignal<RACSignal<ValueType> *> *executionSignals;
 
 /// A signal of whether this command is currently executing.
@@ -47,6 +53,9 @@ extern NSString * const RACUnderlyingCommandErrorKey;
 ///
 /// This signal will send its current value upon subscription, and then all
 /// future values on the main thread.
+/**
+ 只要signalBlock中返回的signal,存在 没有发过sendError和sendComplate的，就是有正在执行的。
+ */
 @property (nonatomic, strong, readonly) RACSignal<NSNumber *> *executing;
 
 /// A signal of whether this command is able to execute.
@@ -71,7 +80,11 @@ extern NSString * const RACUnderlyingCommandErrorKey;
 ///
 /// After subscription, this signal will send all future errors on the main
 /// thread.
+/**
+ 所有执行execute：返回的内部信号 所发送的error都汇集到这里。
+ */
 @property (nonatomic, strong, readonly) RACSignal<NSError *> *errors;
+
 
 /// Whether the command allows multiple executions to proceed concurrently.
 ///

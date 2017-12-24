@@ -39,6 +39,13 @@ const NSInteger RACSignalErrorNoMatchingCase = 2;
 // If the signal errors or completes, the corresponding block is invoked. If the
 // disposable passed to the block is _not_ disposed, then the signal is
 // subscribed to again.
+/**
+ subscribeForever 保证了在信号发送error或者complate后，订阅者重新订阅该信号。
+ 但是当在error block 或者completed block中，调用[compoundDisposable disposd], 订阅者就不在订阅了。
+ 如何实现的：
+ compoundDisposable disposed ---> schedulingDisposable disposed ---->
+ scheduleRecursiveBlock:addingToDisposable:中的注释7.
+ */
 static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), void (^error)(NSError *, RACDisposable *), void (^completed)(RACDisposable *)) {
 	next = [next copy];
 	error = [error copy];
@@ -58,6 +65,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 				[compoundDisposable removeDisposable:weakSelfDisposable];
 			}
 
+            /**
+             会重新执行recursiveBlock。 但是当compoundDisposable is disposed时， 就不会调用了。
+             */
 			recurse();
 		} completed:^{
 			@autoreleasepool {
@@ -65,6 +75,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 				[compoundDisposable removeDisposable:weakSelfDisposable];
 			}
 
+            /**
+             会重新执行recursiveBlock。 但是当compoundDisposable is disposed时， 就不会调用了。
+             */
 			recurse();
 		}];
 
@@ -73,6 +86,9 @@ static RACDisposable *subscribeForever (RACSignal *signal, void (^next)(id), voi
 
 	// Subscribe once immediately, and then use recursive scheduling for any
 	// further resubscriptions.
+    /**
+     正如上面的注释描述的， 第一次立即执行， 之后再调用recurse（）导致的递归就在recursiveScheduler对应线程中执行了。
+     */
 	recursiveBlock(^{
 		RACScheduler *recursiveScheduler = RACScheduler.currentScheduler ?: [RACScheduler scheduler];
 
@@ -1345,6 +1361,7 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 /**
  重试，重试次数为retryCount。
  就是在接受到error时，不将error转发给订阅者。
+ 
  */
 - (RACSignal *)retry:(NSInteger)retryCount {
 	return [[RACSignal createSignal:^(id<RACSubscriber> subscriber) {
@@ -1360,7 +1377,13 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 					return;
 				}
 
+                /**
+                 调用[disposable dispose]后，取消对信号的订阅。也就是subscribe 不在 Forever。
+                 
+                 */
 				[disposable dispose];
+                
+                
 				[subscriber sendError:error];
 			},
 			^(RACDisposable *disposable) {
@@ -1374,6 +1397,9 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	return [[self retry:0] setNameWithFormat:@"[%@] -retry", self.name];
 }
 
+/**
+抽样。保存receiver发送的value（至保存最新的一个）， 当sample信号发送值时，将保存的value发给订阅者。
+ */
 - (RACSignal *)sample:(RACSignal *)sampler {
 	NSCParameterAssert(sampler != nil);
 
@@ -1422,6 +1448,9 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	}] setNameWithFormat:@"[%@] -sample: %@", self.name, sampler];
 }
 
+/**
+ 忽略信号发的所有的next， 订阅者只能接收到complate和error.
+ */
 - (RACSignal *)ignoreValues {
 	return [[self filter:^(id _) {
 		return NO;
@@ -1461,6 +1490,7 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	}] setNameWithFormat:@"[%@] -dematerialize", self.name];
 }
 
+//对信号发送的值取反
 - (RACSignal *)not {
 	return [[self map:^(NSNumber *value) {
 		NSCAssert([value isKindOfClass:NSNumber.class], @"-not must only be used on a signal of NSNumbers. Instead, got: %@", value);
@@ -1469,6 +1499,9 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	}] setNameWithFormat:@"[%@] -not", self.name];
 }
 
+/**
+ 信号发送一个tuple， 对这个tuple的所有元素进行and操作。
+ */
 - (RACSignal *)and {
 	return [[self map:^(RACTuple *tuple) {
 		NSCAssert([tuple isKindOfClass:RACTuple.class], @"-and must only be used on a signal of RACTuples of NSNumbers. Instead, received: %@", tuple);
@@ -1482,6 +1515,9 @@ RACGroupedSignal信号发送的值为transform计算得到的结果（如果传�
 	}] setNameWithFormat:@"[%@] -and", self.name];
 }
 
+/**
+ 信号发送一个tuple， 对这个tuple的所有元素进行or操作。
+ */
 - (RACSignal *)or {
 	return [[self map:^(RACTuple *tuple) {
 		NSCAssert([tuple isKindOfClass:RACTuple.class], @"-or must only be used on a signal of RACTuples of NSNumbers. Instead, received: %@", tuple);
