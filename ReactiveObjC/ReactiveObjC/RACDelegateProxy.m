@@ -46,22 +46,20 @@
 	return YES;
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation {
-	[invocation invokeWithTarget:self.rac_proxiedDelegate];
-}
-
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
 	// Look for the selector as an optional instance method.
 	struct objc_method_description methodDescription = protocol_getMethodDescription(_protocol, selector, NO, YES);
-
 	if (methodDescription.name == NULL) {
 		// Then fall back to looking for a required instance
 		// method.
 		methodDescription = protocol_getMethodDescription(_protocol, selector, YES, YES);
 		if (methodDescription.name == NULL) return [super methodSignatureForSelector:selector];
 	}
-
 	return [NSMethodSignature signatureWithObjCTypes:methodDescription.types];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+    [invocation invokeWithTarget:self.rac_proxiedDelegate];
 }
 
 - (BOOL)respondsToSelector:(SEL)selector {

@@ -172,16 +172,21 @@ static void RACCheckTypeEncoding(const char *typeEncoding) {
 #endif // !NS_BLOCK_ASSERTIONS
 }
 
+
 static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Protocol *protocol) {
 	SEL aliasSelector = RACAliasForSelector(selector);
 
 	@synchronized (self) {
+        //如果存在subject，直接返回
 		RACSubject *subject = objc_getAssociatedObject(self, aliasSelector);
 		if (subject != nil) return subject;
 
+
+        //在这里要搞清楚self和class的关系
 		Class class = RACSwizzleClass(self);
 		NSCAssert(class != nil, @"Could not swizzle class of %@", self);
 
+        
 		subject = [[RACSubject subject] setNameWithFormat:@"%@ -rac_signalForSelector: %s", RACDescription(self), sel_getName(selector)];
 		objc_setAssociatedObject(self, aliasSelector, subject, OBJC_ASSOCIATION_RETAIN);
 
@@ -189,6 +194,14 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 			[subject sendCompleted];
 		}]];
 
+        
+        /**
+         targetMethod == NULL
+                selector ----> _objc_msgForward 当调用selector时直接调用forwardInvocation。
+         targetMethod != NULL
+                selector ----> _objc_msgForward
+                aliasSelector ----> method_getImplementation(targetMethod)
+         */
 		Method targetMethod = class_getInstanceMethod(class, selector);
 		if (targetMethod == NULL) {
 			const char *typeEncoding;
@@ -204,7 +217,6 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 					methodDescription = protocol_getMethodDescription(protocol, selector, YES, YES);
 					NSCAssert(methodDescription.name != NULL, @"Selector %@ does not exist in <%s>", NSStringFromSelector(selector), protocol_getName(protocol));
 				}
-
 				typeEncoding = methodDescription.types;
 			}
 
@@ -216,7 +228,6 @@ static RACSignal *NSObjectRACSignalForSelector(NSObject *self, SEL selector, Pro
 					NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"A race condition occurred implementing %@ on class %@", nil), NSStringFromSelector(selector), class],
 					NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"Invoke -rac_signalForSelector: again to override the implementation.", nil)
 				};
-
 				return [RACSignal error:[NSError errorWithDomain:RACSelectorSignalErrorDomain code:RACSelectorSignalErrorMethodSwizzlingRace userInfo:userInfo]];
 			}
 		} else if (method_getImplementation(targetMethod) != _objc_msgForward) {
@@ -242,6 +253,7 @@ static SEL RACAliasForSelector(SEL originalSelector) {
 	return NSSelectorFromString([RACSignalForSelectorAliasPrefix stringByAppendingString:selectorName]);
 }
 
+
 static const char *RACSignatureForUndefinedSelector(SEL selector) {
 	const char *name = sel_getName(selector);
 	NSMutableString *signature = [NSMutableString stringWithString:@"v@:"];
@@ -265,19 +277,23 @@ static Class RACSwizzleClass(NSObject *self) {
 	Class knownDynamicSubclass = objc_getAssociatedObject(self, RACSubclassAssociationKey);
 	if (knownDynamicSubclass != Nil) return knownDynamicSubclass;
 
-	NSString *className = NSStringFromClass(baseClass);
+    /**
+     If the class is already lying about what it is, it's probably a KVO
+     dynamic subclass or something else that we shouldn't subclass
+     ourselves.
+     
+     Just swizzle -forwardInvocation: in-place. Since the object's class
+     was almost certainly dynamically changed, we shouldn't see another of
+     these classes in the hierarchy.
+     
+     Additionally, swizzle -respondsToSelector: because the default
+     implementation may be ignorant of methods added to this class.
 
+     如果statedClass != baseClass，证明已经动态生成了类（比如kvo）,这时我们没有必要再动态生成一个子类。
+     只要swizzle -forwardInvocation: 和 respondsToSelector
+     */
+    NSString *className = NSStringFromClass(baseClass);
 	if (statedClass != baseClass) {
-		// If the class is already lying about what it is, it's probably a KVO
-		// dynamic subclass or something else that we shouldn't subclass
-		// ourselves.
-		//
-		// Just swizzle -forwardInvocation: in-place. Since the object's class
-		// was almost certainly dynamically changed, we shouldn't see another of
-		// these classes in the hierarchy.
-		//
-		// Additionally, swizzle -respondsToSelector: because the default
-		// implementation may be ignorant of methods added to this class.
 		@synchronized (swizzledClasses()) {
 			if (![swizzledClasses() containsObject:className]) {
 				RACSwizzleForwardInvocation(baseClass);
@@ -288,25 +304,24 @@ static Class RACSwizzleClass(NSObject *self) {
 				[swizzledClasses() addObject:className];
 			}
 		}
-
 		return baseClass;
 	}
 
 	const char *subclassName = [className stringByAppendingString:RACSubclassSuffix].UTF8String;
-	Class subclass = objc_getClass(subclassName);
-
+    
+    //The Class object for the named class, or  nil if the class is not registered with the Objective-C runtime.
+    Class subclass = objc_getClass(subclassName);
+    
 	if (subclass == nil) {
+        //创建子类，类名为subclassName
 		subclass = objc_allocateClassPair(baseClass, subclassName, 0);
 		if (subclass == nil) return nil;
-
+        
 		RACSwizzleForwardInvocation(subclass);
 		RACSwizzleRespondsToSelector(subclass);
-
 		RACSwizzleGetClass(subclass, statedClass);
 		RACSwizzleGetClass(object_getClass(subclass), statedClass);
-
 		RACSwizzleMethodSignatureForSelector(subclass);
-
 		objc_registerClassPair(subclass);
 	}
 

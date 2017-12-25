@@ -22,6 +22,9 @@
 
 #pragma mark Lifecycle
 
+/**
+ 订阅信号，并将
+ */
 + (RACSequence *)sequenceWithSignal:(RACSignal *)signal {
 	RACSignalSequence *seq = [[self alloc] init];
 
