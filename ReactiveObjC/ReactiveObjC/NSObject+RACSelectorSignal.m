@@ -43,6 +43,7 @@ static BOOL RACForwardInvocation(id self, NSInvocation *invocation) {
 	RACSubject *subject = objc_getAssociatedObject(self, aliasSelector);
 
 	Class class = object_getClass(invocation.target);
+    //这个respondsToAlias 保存方法原来的实现（如果有声明的话，在NSObjectRACSignalForSelector中指定的）
 	BOOL respondsToAlias = [class instancesRespondToSelector:aliasSelector];
 	if (respondsToAlias) {
 		invocation.selector = aliasSelector;
@@ -104,6 +105,9 @@ static void RACSwizzleRespondsToSelector(Class class) {
 	// the instance has a signal for the selector.
 	// Otherwise, call the original -respondsToSelector:.
 	id newRespondsToSelector = ^ BOOL (id self, SEL selector) {
+        /**
+         从当前类中获取,不去查询父类。
+         */
 		Method method = rac_getImmediateInstanceMethod(class, selector);
 
 		if (method != NULL && method_getImplementation(method) == _objc_msgForward) {
@@ -322,9 +326,9 @@ static Class RACSwizzleClass(NSObject *self) {
 		RACSwizzleGetClass(subclass, statedClass);
 		RACSwizzleGetClass(object_getClass(subclass), statedClass);
 		RACSwizzleMethodSignatureForSelector(subclass);
+        //注册这个子类
 		objc_registerClassPair(subclass);
 	}
-
 	object_setClass(self, subclass);
 	objc_setAssociatedObject(self, RACSubclassAssociationKey, subclass, OBJC_ASSOCIATION_ASSIGN);
 	return subclass;
