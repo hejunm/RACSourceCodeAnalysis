@@ -253,6 +253,7 @@ static BOOL RACForwardInvocation(id self, NSInvocation *invocation) {
     //如果原类有实现该方法，调用方法原来的实现
 	SEL aliasSelector = RACAliasForSelector(invocation.selector);
 	Class class = object_getClass(invocation.target);
+    //这个respondsToAlias 保存方法原来的实现（如果有声明的话，在NSObjectRACSignalForSelector中指定的）
 	BOOL respondsToAlias = [class instancesRespondToSelector:aliasSelector];
 	if (respondsToAlias) {
 		invocation.selector = aliasSelector;
@@ -324,6 +325,9 @@ static void RACSwizzleRespondsToSelector(Class class) {
 	// the instance has a signal for the selector.
 	// Otherwise, call the original -respondsToSelector:.
 	id newRespondsToSelector = ^ BOOL (id self, SEL selector) {
+        /**
+         从当前类中获取,不去查询父类。
+         */
 		Method method = rac_getImmediateInstanceMethod(class, selector);
 
 		if (method != NULL && method_getImplementation(method) == _objc_msgForward) {
