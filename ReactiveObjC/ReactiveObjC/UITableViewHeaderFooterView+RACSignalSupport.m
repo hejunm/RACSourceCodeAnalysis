@@ -19,6 +19,7 @@
 	RACSignal *signal = objc_getAssociatedObject(self, _cmd);
 	if (signal != nil) return signal;
 
+    //send 的值 替换成RACUnit.defaultUnit。订阅者不关系这个。
 	signal = [[[self
 		rac_signalForSelector:@selector(prepareForReuse)]
 		mapReplace:RACUnit.defaultUnit]
