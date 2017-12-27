@@ -22,17 +22,13 @@
  self.rac_delegateProxy.rac_proxiedDelegate = self.delegate;
  self.delegate = (id)self.rac_delegateProxy;
  
- 当UITextView有啥事件需要通知给代理时，就会调用rac_delegateProxy的相应代理方法。但是rac_delegateProxy没有实现呀，
+ 当UITextView有啥事件(除textViewDidChange：之外)需要通知给代理时，就会调用rac_delegateProxy的相应代理方法。但是rac_delegateProxy没有实现呀，
  这是就会转发给它rac_proxiedDelegate。 转发过程在RACDelegateProxy 实现。
  
  这时，UITextView有事件需要通知给delegate时，都会通过RACDelegateProxy进行转发。
- 相当于加入了一个hook。
+ 相当于加入了一个hook。这个转发过程并没有这么简单。 请先看NSObject+RACSelectorSignal的实现。
  
- 分析到这里，两个问题不由的从脑海中浮现：
- 如何将代理方法转变成signal？ 怎么用这个hook？
- 
- 在下面的方法寻找答案吧！
- [self.rac_delegateProxy signalForSelector:@selector(textViewDidChange:)]
+ textViewDidChange：的转发更加复杂，结合NSObject+RACSelectorSignal。
  */
 static void RACUseDelegateProxy(UITextView *self) {
     if (self.delegate == self.rac_delegateProxy) return;
