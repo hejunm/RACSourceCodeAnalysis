@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///        Model                      View
 ///  `leadingTerminal` ------> `followingTerminal`
 ///  `leadingTerminal` <------ `followingTerminal`
+
 ///
 /// The initial value of the model and all future changes to it are _sent on_ the
 /// `leadingTerminal`, and _received by_ subscribers of the `followingTerminal`.
