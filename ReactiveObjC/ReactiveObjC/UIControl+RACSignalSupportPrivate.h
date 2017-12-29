@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIControl (RACSignalSupportPrivate)
 
+/**
+ UIControlEvents触发时，会将[self valueForKey:key]返回的值发给RACChannelTerminal。
+ 当设置RACChannelTerminal的值时，会通过[self setValue:vlaue forKey:key]为相应的key设置value.
+ 
+ */
 /// Adds a RACChannel-based interface to the receiver for the given
 /// UIControlEvents and exposes it.
 ///

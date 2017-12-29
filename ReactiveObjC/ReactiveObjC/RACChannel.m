@@ -36,7 +36,7 @@
                  |                                   \/                                  |
                  |                                   /\                                  |
                  |                                  /  \                                 |
-    sourceSignal1|                                 /    \                                |sourceSignal2
+    sourceSignal1|                                 /    \                                |订阅sourceSignal2
     sendEvent--> |otherTerminal:followingSubject->/      \<-otherTerminal:leadingSubject |<--sendEvent
                  |                                                                       |
      
@@ -62,6 +62,7 @@
 	RACReplaySubject *leadingSubject = [[RACReplaySubject replaySubjectWithCapacity:0] setNameWithFormat:@"leadingSubject"];
 	RACReplaySubject *followingSubject = [[RACReplaySubject replaySubjectWithCapacity:1] setNameWithFormat:@"followingSubject"];
 
+    //只要有一个sendComplate 或 sendError,这个通道就结束。
 	// Propagate errors and completion to everything.
 	[[leadingSubject ignoreValues] subscribe:followingSubject];
 	[[followingSubject ignoreValues] subscribe:leadingSubject];
